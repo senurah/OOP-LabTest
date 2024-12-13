@@ -1,4 +1,6 @@
 package com.senurah.lab_test.core;
 
-public class TicketOperation {
+public interface TicketOperation {
+    void addTickets(String ticket);
+    String removeTicket();
 }
