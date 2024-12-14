@@ -14,15 +14,15 @@ public class Main {
         TicketPool ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets());
         Thread vendor = new Thread(new Vendor(ticketPool,
                 config.getTicketReleaseRate()));
-        Thread customer = new Thread(new Customer(ticketPool));
+//        Thread customer = new Thread(new Customer(ticketPool));
 
 
         vendor.start();
-        customer.start();
+//        customer.start();
 
         try {
             vendor.join();
-            customer.join();
+//            customer.join();
         } catch (InterruptedException e) {
             Logger.log("Main thread interrupted.");
         }
