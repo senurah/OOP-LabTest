@@ -1,6 +1,9 @@
 package com.senurah.lab_test.core;
 
+import com.senurah.lab_test.logging.Logger;
+
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.List;
 public class TicketPool implements TicketOperation {
@@ -8,31 +11,82 @@ public class TicketPool implements TicketOperation {
     // new additions
     private int maxTicketCapacity ;
 
+    //creating the limitation factor
+    private int totalTickets;
+
     //Initializing the parameterized constructor for the ticket pool
-    public TicketPool(int maxTicketCapacity){
+    public TicketPool(int maxTicketCapacity,int totalTickets){
         this.maxTicketCapacity = maxTicketCapacity;
+        this.totalTickets = totalTickets;
+//        this.tickets = Collections.synchronizedList(new LinkedList<>());
+
     }
 
 
     @Override
     public synchronized void addTickets(String ticket) {
 
-        if(tickets.size() < maxTicketCapacity){
+        while(tickets.size()>= maxTicketCapacity){
+            try{
+                Logger.log("Ticket pool is full. Waiting customers to buy Tickets");
+                wait();
+            } catch (InputMismatchException e){
+                Thread.currentThread().interrupt();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        if(totalTickets>0){
             tickets.add(ticket);
-        } else {
-            System.out.println("Ticket pool is full.. Waiting customers to buy Tickets");
+            totalTickets--;
+            //this is not needed as the customer thread already does this
+//            Logger.log("Ticket added to the pool by"+ Thread.currentThread().getName()+ "Ticket Pool :"+tickets.size());
+            notifyAll();
         }
 
     }
     @Override
     public synchronized String removeTicket() {
-        if(tickets.isEmpty()) {
-            return "Ticket pool is empty.. waiting to vendors to add tickets";
-        } else {
-            return tickets.remove(0);
+
+
+        while(tickets.isEmpty() && totalTickets > 0){
+            try{
+                Logger.log("TicketPool is empty. Waiting for vendors to add tickets");
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+
+        if(!tickets.isEmpty()){
+            String ticket = tickets.remove(0);
+            notifyAll();
+            return ticket;
+        }else {
+            Logger.log("No more tickets available.");
+            return null;
+        }
+
     }
+
+
     public int getTicketCount() {
         return tickets.size();
     }
+
+    public synchronized boolean areTicketsAvailable(){
+        return totalTickets > 0 || !tickets.isEmpty();
+    }
+
+    public int getMaxTicketCapacity() {
+        return maxTicketCapacity;
+    }
+
+    public int getTotalTickets(){
+        return totalTickets;
+    }
+
+
+
 }
