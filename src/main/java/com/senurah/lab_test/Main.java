@@ -8,9 +8,10 @@ import com.senurah.lab_test.threads.Vendor;
 import com.senurah.lab_test.ui.CommandLineInterface;
 
 public class Main {
+
     public static void main(String[] args) {
         Configuration config = CommandLineInterface.configureSystem();
-        TicketPool ticketPool = new TicketPool();
+        TicketPool ticketPool = new TicketPool(config.getMaxTicketCapacity());
         Thread vendor = new Thread(new Vendor(ticketPool,
                 config.getTicketReleaseRate()));
         Thread customer = new Thread(new Customer(ticketPool));

@@ -81,7 +81,7 @@ public class JavaFXInterface extends Application {
         int maxTicketCapacity = validateInput(maxTicketCapacityField.getText(), "Max Ticket Capacity");
         // Initialize configuration and ticket pool
         Configuration config = new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
-        ticketPool = new TicketPool();
+        ticketPool = new TicketPool(config.getMaxTicketCapacity());
         // Start threads
         vendorThread = new Thread(new Vendor(ticketPool, config.getTicketReleaseRate()));
         customerThread = new Thread(new Customer(ticketPool));

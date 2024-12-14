@@ -3,6 +3,7 @@ package com.senurah.lab_test.ui;
 import com.senurah.lab_test.config.Configuration;
 import com.senurah.lab_test.logging.Logger;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 public class CommandLineInterface {
     public static Configuration configureSystem() {
@@ -13,8 +14,8 @@ public class CommandLineInterface {
         int customerRetrievalRate = getInput(scanner, "Enter Customer Retrieval Rate: ");
         int maxTicketCapacity = getInput(scanner, "Enter Max Ticket Capacity: ");
         Logger.log("System configured successfully.");
-        return new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate,
-                maxTicketCapacity);
+
+        return new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
     }
     private static int getInput(Scanner scanner, String prompt) {
         int value;
@@ -29,6 +30,8 @@ public class CommandLineInterface {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a number.");
+            }catch(InputMismatchException g){
+                System.out.println("Please enter an Integer.");
             }
         }
     }
