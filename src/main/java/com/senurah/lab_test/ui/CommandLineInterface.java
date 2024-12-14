@@ -1,6 +1,7 @@
 package com.senurah.lab_test.ui;
 
 import com.senurah.lab_test.config.Configuration;
+import com.senurah.lab_test.exceptions.InvalidConfigurationException;
 import com.senurah.lab_test.logging.Logger;
 
 import java.util.InputMismatchException;
@@ -8,14 +9,26 @@ import java.util.Scanner;
 public class CommandLineInterface {
     public static Configuration configureSystem() {
         Scanner scanner = new Scanner(System.in);
-        Logger.log("Starting system configuration...");
-        int totalTickets = getInput(scanner, "Enter Total Tickets: ");
-        int ticketReleaseRate = getInput(scanner, "Enter Ticket Release Rate: ");
-        int customerRetrievalRate = getInput(scanner, "Enter Customer Retrieval Rate: ");
-        int maxTicketCapacity = getInput(scanner, "Enter Max Ticket Capacity: ");
-        Logger.log("System configured successfully.");
+        Configuration config = null;
 
-        return new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
+
+        while(config==null){
+            try {
+                Logger.log("Starting system configuration...");
+                int totalTickets = getInput(scanner, "Enter Total Tickets: ");
+                int ticketReleaseRate = getInput(scanner, "Enter Ticket Release Rate: ");
+                int customerRetrievalRate = getInput(scanner, "Enter Customer Retrieval Rate: ");
+                int maxTicketCapacity = getInput(scanner, "Enter Max Ticket Capacity: ");
+                config = new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
+                Logger.log("System configured successfully.");
+            }catch (InvalidConfigurationException e){
+                Logger.log("Configuration error."+e.getMessage());
+                System.out.println("Please re-enter valid configuration values.");
+
+            }
+        }
+
+        return config;
     }
     private static int getInput(Scanner scanner, String prompt) {
         int value;
