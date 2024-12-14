@@ -11,12 +11,15 @@ public class Main {
 
     public static void main(String[] args) {
         Configuration config = CommandLineInterface.configureSystem();
-        TicketPool ticketPool = new TicketPool(config.getMaxTicketCapacity());
+        TicketPool ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets());
         Thread vendor = new Thread(new Vendor(ticketPool,
                 config.getTicketReleaseRate()));
         Thread customer = new Thread(new Customer(ticketPool));
+
+
         vendor.start();
         customer.start();
+
         try {
             vendor.join();
             customer.join();
