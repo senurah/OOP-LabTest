@@ -97,6 +97,10 @@ public class TicketPool implements TicketOperation {
         return ticketAdded;
     }
 
+    public List<String> getTickets() {
+        return new LinkedList<>(tickets); // Return a copy for safety
+    }
+
 
 
 
