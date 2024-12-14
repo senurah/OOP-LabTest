@@ -2,7 +2,7 @@ package com.senurah.lab_test;
 
 import com.senurah.lab_test.config.Configuration;
 import com.senurah.lab_test.core.*;
-        import com.senurah.lab_test.logging.Logger;
+import com.senurah.lab_test.logging.Logger;
 import com.senurah.lab_test.threads.Customer;
 import com.senurah.lab_test.threads.Vendor;
 import com.senurah.lab_test.ui.CommandLineInterface;

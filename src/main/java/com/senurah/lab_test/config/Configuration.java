@@ -1,6 +1,7 @@
 package com.senurah.lab_test.config;
 
 import com.google.gson.Gson;
+import com.senurah.lab_test.exceptions.InvalidConfigurationException;
 
 import java.io.*;
 public class Configuration {
@@ -9,7 +10,8 @@ public class Configuration {
     private int customerRetrievalRate;
     private int maxTicketCapacity;
 
-    public Configuration(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
+    public Configuration(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) throws InvalidConfigurationException {
+        validateConfiguration(totalTickets,ticketReleaseRate,customerRetrievalRate,maxTicketCapacity);
         this.totalTickets = totalTickets;
         this.ticketReleaseRate = ticketReleaseRate;
         this.customerRetrievalRate = customerRetrievalRate;
@@ -34,4 +36,29 @@ public class Configuration {
             gson.toJson(this, writer);
         }
     }
+
+    private void validateConfiguration(int totalTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity)
+            throws InvalidConfigurationException {
+        if (totalTickets <= 0 || ticketReleaseRate <= 0 || customerRetrievalRate <= 0 || maxTicketCapacity <= 0) {
+            throw new InvalidConfigurationException("All values must be greater than zero.");
+        }
+
+        if (ticketReleaseRate >= maxTicketCapacity) {
+            throw new InvalidConfigurationException("Ticket release rate must be less than the maximum ticket capacity.");
+        }
+
+        if (customerRetrievalRate >= maxTicketCapacity) {
+            throw new InvalidConfigurationException("Customer retrieval rate must be less than the maximum ticket capacity.");
+        }
+
+        if (ticketReleaseRate >= totalTickets) {
+            throw new InvalidConfigurationException("Ticket release rate must be less than the total tickets.");
+        }
+
+        if (customerRetrievalRate >= totalTickets) {
+            throw new InvalidConfigurationException("Customer retrieval rate must be less than the total tickets.");
+        }
+    }
+
+
 }
