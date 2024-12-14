@@ -25,7 +25,7 @@ public class Customer extends AbstractTicketHandler implements Runnable {
                 } else {
                     String ticket = ticketPool.removeTicket();
                     if (ticket != null) {
-                        Logger.log("Customer retrieved: " + ticket);
+                        Logger.logTicketOperation(ticket,"Customer retrieved: ","[REMOVE]");
                         ticketPool.notifyAll(); // Notify vendors
                     } else {
                         Logger.log("No more tickets left. Customer stopping...");

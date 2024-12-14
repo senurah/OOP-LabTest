@@ -13,6 +13,7 @@ public class TicketPool implements TicketOperation {
 
     //creating the limitation factor
     private int totalTickets;
+    private int ticketAdded;
 
     //Initializing the parameterized constructor for the ticket pool
     public TicketPool(int maxTicketCapacity,int totalTickets){
@@ -37,9 +38,14 @@ public class TicketPool implements TicketOperation {
             }
         }
 
+        //Giving a ticket Id
+
         if(totalTickets>0){
+            ticketAdded++;
+            ticket = ticket+" "+ticketAdded;
             tickets.add(ticket);
             totalTickets--;
+
             //this is not needed as the customer thread already does this
 //            Logger.log("Ticket added to the pool by"+ Thread.currentThread().getName()+ "Ticket Pool :"+tickets.size());
             notifyAll();
@@ -86,6 +92,11 @@ public class TicketPool implements TicketOperation {
     public int getTotalTickets(){
         return totalTickets;
     }
+
+    public int getTicketAdded(){
+        return ticketAdded;
+    }
+
 
 
 

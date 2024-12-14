@@ -42,9 +42,10 @@ public class Vendor extends AbstractTicketHandler implements Runnable {
                         break;
                     }
                 } else if (ticketPool.areTicketsAvailable()) {
-                    String ticket = "Ticket-" + System.nanoTime();
+                    String ticket = "Ticket-";
                     ticketPool.addTickets(ticket);
-                    Logger.log("Vendor added: " + ticket+"Tickets remaining :"+ticketPool.getTotalTickets());
+                    Logger.logTicketOperation(String.valueOf(ticketPool.getTicketAdded()),"Vendor added: ","[ADD]");
+//                    Logger.log("Vendor added: " + ticket+"Tickets remaining :"+ticketPool.getTotalTickets());
                     ticketPool.notifyAll(); // Notify customers
                 } else {
                     Logger.log("No more tickets to release. Vendor stopping...");
