@@ -84,7 +84,7 @@ public class JavaFXInterface extends Application {
         ticketPool = new TicketPool(config.getMaxTicketCapacity(),config.getTotalTickets());
         // Start threads
         vendorThread = new Thread(new Vendor(ticketPool, config.getTicketReleaseRate()));
-        customerThread = new Thread(new Customer(ticketPool));
+//        customerThread = new Thread(new Customer(ticketPool));
         vendorThread.start();
         customerThread.start();
         updateStatus("System Running...");
