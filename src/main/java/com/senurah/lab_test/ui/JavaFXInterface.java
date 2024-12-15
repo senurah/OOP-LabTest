@@ -4,9 +4,10 @@ import com.senurah.lab_test.config.Configuration;
 import com.senurah.lab_test.core.PriorityRetrieval;
 import com.senurah.lab_test.core.TicketPool;
 import com.senurah.lab_test.core.TicketRetrievalStrategy;
-import com.senurah.lab_test.logging.Logger;
 import com.senurah.lab_test.threads.Customer;
 import com.senurah.lab_test.threads.Vendor;
+import com.senurah.lab_test.exceptions.InvalidConfigurationException;
+import com.senurah.lab_test.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -16,6 +17,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class JavaFXInterface extends Application {
     private TextField totalTicketsField;
     private TextField ticketReleaseRateField;
@@ -24,6 +27,7 @@ public class JavaFXInterface extends Application {
     private Label statusLabel;
     private ListView<String> ticketListView;
     private ObservableList<String> ticketList;
+    private static final String CONFIG_FILE_PATH = "Config.json";
     private TicketPool ticketPool;
     private Thread vendorThread;
     private Thread customerThread;
@@ -54,20 +58,25 @@ public class JavaFXInterface extends Application {
         // Buttons
         Button startButton = new Button("Start");
         Button stopButton = new Button("Stop");
+        Button saveButton = new Button("Save");
+        Button loadButton = new Button("Load");
+
         gridPane.add(startButton, 0, 4);
         gridPane.add(stopButton, 1, 4);
+        gridPane.add(saveButton, 0, 5);
+        gridPane.add(loadButton, 1, 5);
 
         // Status Label
         statusLabel = new Label("System Status: Stopped");
-        gridPane.add(statusLabel, 0, 5, 2, 1);
+        gridPane.add(statusLabel, 0, 6, 2, 1);
 
         // Ticket List View
         ticketList = FXCollections.observableArrayList();
         ticketListView = new ListView<>(ticketList);
-        gridPane.add(new Label("Current Tickets in Pool:"), 0, 6);
-        gridPane.add(ticketListView, 0, 7, 2, 1);
+        gridPane.add(new Label("Current Tickets in Pool:"), 0, 7);
+        gridPane.add(ticketListView, 0, 8, 2, 1);
 
-        // Start button event
+        // Button actions
         startButton.setOnAction(event -> {
             try {
                 startSystem();
@@ -77,14 +86,17 @@ public class JavaFXInterface extends Application {
             }
         });
 
-        // Stop button event
         stopButton.setOnAction(event -> stopSystem());
+
+        saveButton.setOnAction(event -> saveConfiguration());
+        loadButton.setOnAction(event -> loadConfiguration());
 
         // Scene setup
         Scene scene = new Scene(gridPane, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 
     private void startSystem() throws Exception {
         // Validate and parse input
@@ -116,15 +128,9 @@ public class JavaFXInterface extends Application {
         new Thread(this::updateTicketListView).start();
 
         updateStatus("System Running...");
+
     }
 
-    private void stopSystem() {
-        if (vendorThread != null && customerThread != null) {
-            vendorThread.interrupt();
-            customerThread.interrupt();
-        }
-        updateStatus("System Stopped.");
-    }
 
     private void updateTicketListView() {
         while (true) {
@@ -137,6 +143,46 @@ public class JavaFXInterface extends Application {
                 Logger.log("Ticket list updater interrupted.");
                 break;
             }
+        }
+    }
+
+
+    private void stopSystem() {
+        updateStatus("System Stopped.");
+    }
+
+    private void saveConfiguration() {
+        try {
+            int totalTickets = validateInput(totalTicketsField.getText(), "Total Tickets");
+            int ticketReleaseRate = validateInput(ticketReleaseRateField.getText(), "Ticket Release Rate");
+            int customerRetrievalRate = validateInput(customerRetrievalRateField.getText(), "Customer Retrieval Rate");
+            int maxTicketCapacity = validateInput(maxTicketCapacityField.getText(), "Max Ticket Capacity");
+
+            Configuration config = new Configuration(totalTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
+            config.saveToFile(CONFIG_FILE_PATH);
+            Logger.log("Configuration saved successfully.");
+            updateStatus("Configuration saved.");
+        } catch (Exception e) {
+            Logger.log("Error saving configuration: " + e.getMessage());
+            updateStatus("Error: Could not save configuration.");
+        }
+    }
+
+    private void loadConfiguration() {
+        try {
+            Configuration config = Configuration.loadFromFile(CONFIG_FILE_PATH);
+            totalTicketsField.setText(String.valueOf(config.getTotalTickets()));
+            ticketReleaseRateField.setText(String.valueOf(config.getTicketReleaseRate()));
+            customerRetrievalRateField.setText(String.valueOf(config.getCustomerRetrievalRate()));
+            maxTicketCapacityField.setText(String.valueOf(config.getMaxTicketCapacity()));
+
+            Logger.log("Configuration loaded successfully.");
+            updateStatus("Configuration loaded.");
+        } catch (IOException e) {
+            Logger.log("Error loading configuration: " + e.getMessage());
+            updateStatus("Error: Could not load configuration.");
+        } catch (InvalidConfigurationException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -160,3 +206,4 @@ public class JavaFXInterface extends Application {
         launch(args);
     }
 }
+
