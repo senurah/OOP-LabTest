@@ -1,0 +1,14 @@
+package com.senurah.lab_test.threads;
+
+import com.senurah.lab_test.core.TicketPool;
+import com.senurah.lab_test.logging.Logger;
+
+public class SlowVendor extends Vendor{
+    private int ticketReleaseRate;
+
+    public SlowVendor(TicketPool ticketPool, int ticketReleaseRate) {
+        super(ticketPool, (int)Math.ceil(ticketReleaseRate/2));
+    }
+
+
+}
