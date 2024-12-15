@@ -6,13 +6,13 @@ This repository contains the development of a dynamic Ticket Management System p
 
 | Branch Name                  | Description                                                                                     | Access Files                                  |
 |------------------------------|-------------------------------------------------------------------------------------------------|----------------------------------------------|
-| [DefaultMain](../../tree/DefaultMain)              | Initial structure of the project, setting up the foundation for the Ticket Management System. | [View Files](../../tree/DefaultMain)         |
-| [logging](../../tree/logging)                     | Implements a logging mechanism to monitor system operations, including ticket additions and retrievals. | [View Files](../../tree/logging)             |
-| [TicketRetrievalStratergy](../../tree/TicketRetrievalStratergy) | Adds support for ticket retrieval by priority or ID using a strategy pattern for flexibility.   | [View Files](../../tree/TicketRetrievalStratergy) |
-| [ExceptionHandling](../../tree/ExceptionHandling) | Introduces custom exception handling (`InvalidConfigurationException`) to validate system configurations. | [View Files](../../tree/ExceptionHandling)   |
-| [EnhancingVendorBehaviour](../../tree/EnhancingVendorBehaviour) | Extends the vendor functionality to support `FastVendor` and `SlowVendor` using polymorphism.   | [View Files](../../tree/EnhancingVendorBehaviour) |
-| [TicketStatisticsReporting](../../tree/TicketStatisticsReporting) | Adds periodic reporting of ticket statistics, including total tickets added, removed, and current pool size. | [View Files](../../tree/TicketStatisticsReporting) |
-| [TicketPoolVisualization](../../tree/TicketPoolVisualization) | Implements a JavaFX GUI for dynamic visualization of the ticket pool, showing real-time updates of ticket status. | [View Files](../../tree/TicketPoolVisualization) |
+| [DefaultMain](https://github.com/senurah/OOP-LabTest/tree/DefaultMain)              | Initial structure of the project, setting up the foundation for the Ticket Management System. | [View Files](https://github.com/senurah/OOP-LabTest/tree/DefaultMain)         |
+| [logging](https://github.com/senurah/OOP-LabTest/tree/logging)                     | Implements a logging mechanism to monitor system operations, including ticket additions and retrievals. | [View Files](https://github.com/senurah/OOP-LabTest/tree/logging)             |
+| [TicketRetrievalStratergy](https://github.com/senurah/OOP-LabTest/tree/TicketRetrievalStratergy) | Adds support for ticket retrieval by priority or ID using a strategy pattern for flexibility.   | [View Files](https://github.com/senurah/OOP-LabTest/tree/TicketRetrievalStratergy) |
+| [ExceptionHandling](https://github.com/senurah/OOP-LabTest/tree/ExceptionHandling) | Introduces custom exception handling (`InvalidConfigurationException`) to validate system configurations. | [View Files](https://github.com/senurah/OOP-LabTest/tree/ExceptionHandling)   |
+| [EnhancingVendorBehaviour](https://github.com/senurah/OOP-LabTest/tree/EnhancingVendorBehaviour) | Extends the vendor functionality to support `FastVendor` and `SlowVendor` using polymorphism.   | [View Files](https://github.com/senurah/OOP-LabTest/tree/EnhancingVendorBehaviour) |
+| [TicketStatisticsReporting](https://github.com/senurah/OOP-LabTest/tree/TicketStatisticsReporting) | Adds periodic reporting of ticket statistics, including total tickets added, removed, and current pool size. | [View Files](https://github.com/senurah/OOP-LabTest/tree/TicketStatisticsReporting) |
+| [TicketPoolVisualization](https://github.com/senurah/OOP-LabTest/tree/TicketPoolVisualization) | Implements a JavaFX GUI for dynamic visualization of the ticket pool, showing real-time updates of ticket status. | [View Files](https://github.com/senurah/OOP-LabTest/tree/TicketPoolVisualization) |
 
 ## How to Use
 
