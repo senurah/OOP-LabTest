@@ -5,10 +5,7 @@ import com.senurah.lab_test.core.PriorityRetrieval;
 import com.senurah.lab_test.core.TicketPool;
 import com.senurah.lab_test.core.TicketRetrievalStrategy;
 import com.senurah.lab_test.logging.Logger;
-import com.senurah.lab_test.threads.Customer;
-import com.senurah.lab_test.threads.FastVendor;
-import com.senurah.lab_test.threads.SlowVendor;
-import com.senurah.lab_test.threads.Vendor;
+import com.senurah.lab_test.threads.*;
 import com.senurah.lab_test.ui.CommandLineInterface;
 
 public class Main {
@@ -30,6 +27,9 @@ public class Main {
         //Slow vendor using overriding
         Thread slowVendor = new Thread(new SlowVendor(ticketPool, config.getTicketReleaseRate()));
 
+        // Statistics Reporter
+        Thread statisticsReporter = new Thread(new StatisticsReporter(ticketPool));
+
 
 
 
@@ -40,6 +40,7 @@ public class Main {
         fastVendor.start();
         fastVendor2.start();
         slowVendor.start();
+        statisticsReporter.start();
 
 
 
@@ -51,6 +52,8 @@ public class Main {
             fastVendor.join();
             fastVendor2.join();
             slowVendor.join();
+            statisticsReporter.interrupt();
+//            statisticsReporter.join();
         } catch (InterruptedException e) {
             Logger.log("Main thread interrupted.");
         }
