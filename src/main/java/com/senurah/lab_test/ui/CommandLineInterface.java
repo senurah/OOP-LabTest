@@ -4,12 +4,32 @@ import com.senurah.lab_test.config.Configuration;
 import com.senurah.lab_test.exceptions.InvalidConfigurationException;
 import com.senurah.lab_test.logging.Logger;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 public class CommandLineInterface {
+    private static final String CONFIG_FILE_PATH = "Config.json";
+
     public static Configuration configureSystem() {
         Scanner scanner = new Scanner(System.in);
         Configuration config = null;
+        System.out.println("Do you want to load the existing Configuration? (yes/no)");
+        String userInput  = scanner.nextLine().trim().toLowerCase();
+
+
+        if (userInput.equals("yes")) {
+            try {
+                config = Configuration.loadFromFile(CONFIG_FILE_PATH);
+                Logger.log("Configuration loaded successfully from " + CONFIG_FILE_PATH);
+                System.out.println("Configuration loaded successfully.");
+                return config;
+            } catch (IOException e) {
+                Logger.log("Error loading configuration: " + e.getMessage());
+                System.out.println("No existing configuration found. Proceeding with new configuration setup.");
+            } catch (InvalidConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
 
         while(config==null){
@@ -25,6 +45,19 @@ public class CommandLineInterface {
                 Logger.log("Configuration error."+e.getMessage());
                 System.out.println("Please re-enter valid configuration values.");
 
+            }
+        }
+        //saving  to a json file
+        System.out.println("Do you want to save this configuration for future use? (yes/no)");
+        userInput = scanner.nextLine().trim().toLowerCase();
+        if (userInput.equals("yes")) {
+            try {
+                config.saveToFile(CONFIG_FILE_PATH);
+                Logger.log("Configuration saved successfully to " + CONFIG_FILE_PATH);
+                System.out.println("Configuration saved successfully.");
+            } catch (IOException e) {
+                Logger.log("Error saving configuration: " + e.getMessage());
+                System.out.println("Failed to save configuration.");
             }
         }
 
