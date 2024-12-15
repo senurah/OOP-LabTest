@@ -50,7 +50,6 @@ public class TicketPool implements TicketOperation {
 //            Logger.log("Ticket added to the pool by"+ Thread.currentThread().getName()+ "Ticket Pool :"+tickets.size());
             notifyAll();
         }
-
     }
     @Override
     public synchronized String removeTicket() {
