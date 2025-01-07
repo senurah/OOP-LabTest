@@ -31,6 +31,7 @@ public class JavaFXInterface extends Application {
     private TicketPool ticketPool;
     private Thread vendorThread;
     private Thread customerThread;
+    private Thread ticketListUpdater;
 
     @Override
     public void start(Stage primaryStage) {
@@ -125,7 +126,8 @@ public class JavaFXInterface extends Application {
         customerThread.start();
 
         // Update tickets dynamically
-        new Thread(this::updateTicketListView).start();
+        ticketListUpdater = new Thread(this::updateTicketListView);
+        ticketListUpdater.start();
 
         updateStatus("System Running...");
 
@@ -148,6 +150,11 @@ public class JavaFXInterface extends Application {
 
 
     private void stopSystem() {
+        if (vendorThread != null && customerThread != null) {
+            vendorThread.interrupt();
+            customerThread.interrupt();
+            ticketListUpdater.interrupt();
+        }
         updateStatus("System Stopped.");
     }
 
